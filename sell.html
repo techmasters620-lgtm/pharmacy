@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sell Drug - Hospitality Pharmacy</title>
+<style>
+body{font-family:Arial;padding:20px;background:#f4f6f8}
+.card{background:white;padding:15px;border-radius:10px;margin-bottom:15px}
+input,select,button{padding:10px;margin:5px;width:300px;display:block}
+button{background:green;color:white;cursor:pointer;width:320px}
+</style>
+</head>
+<body>
+<h1>Sell Drug</h1>
+<p><a href="/">Back to Inventory</a> | <a href="/sales">View Sales</a></p>
+{% if error %}
+<div class="card" style="background:#f8d7da;"><p style="color:red;">{{ error }}</p></div>
+{% endif %}
+{% if success %}
+<div class="card" style="background:#d4edda;"><p style="color:green;">{{ success }}</p></div>
+{% endif %}
+<div class="card">
+<h3>Select Drug to Sell</h3>
+<form method="POST" action="/sell">
+<label>Drug:</label>
+<select name="drug_id" required>
+<option value="">-- Choose Drug --</option>
+{% for d in drugs %}
+<option value="{{ d['id'] }}">{{ d['name'] }} {{ d['dosage'] }} - Stock: {{ d['quantity'] }} - GHS {{ d['price'] }}</option>
+{% endfor %}
+</select>
+<label>Quantity to Sell:</label>
+<input name="quantity" type="number" min="1" placeholder="e.g. 2" required>
+<label>Patient Name (Optional):</label>
+<input name="patient_name" placeholder="e.g. Kwame Mensah">
+<button type="submit">Sell Now</button>
+</form>
+</div>
+<div class="card">
+<h3>Current Stock</h3>
+<table width="100%" border="1" cellpadding="10" cellspacing="0">
+<tr><th>Name</th><th>Dosage</th><th>Stock Left</th><th>Price</th></tr>
+{% for d in drugs %}
+<tr><td>{{ d['name'] }}</td><td>{{ d['dosage'] }}</td><td>{{ d['quantity'] }}</td><td>GHS {{ d['price'] }}</td></tr>
+{% endfor %}
+</table>
+</div>
+</body>
+</html>

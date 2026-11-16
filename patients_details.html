@@ -1,0 +1,7 @@
+<!DOCTYPE html><html><body style="font-family:Arial;padding:20px;">
+<h1>{{patient['name']}} - {{patient['phone']}}</h1><a href="/patients">Back to Patients</a>
+<h3>Add Prescription</h3>
+<form method="POST"><input name="drug_name" placeholder="Drug" required><input name="dosage" placeholder="Dosage e.g. 500mg"><input name="doctor_name" placeholder="Doctor Name"><input name="instructions" placeholder="e.g. 1 tablet 3x daily for 5 days" style="width:300px;"><button>Save Prescription</button></form>
+<h3>Prescriptions</h3><ul>{% for pr in prescriptions %}<li>{{pr['date']}} - {{pr['drug_name']}} {{pr['dosage']}} - {{pr['instructions']}} (Dr. {{pr['doctor_name']}})</li>{% endfor %}</ul>
+<h3>Purchase History</h3><ul>{% for h in history %}<li>{{h['date']}} - {{h['drug_name']}} x {{h['quantity_sold']}} = GHS {{h['total_price']}}</li>{% endfor %}</ul>
+</body></html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sales History - Hospitality Pharmacy</title>
+<style>
+body{font-family:Arial;padding:20px;background:#f4f6f8}
+.card{background:white;padding:15px;border-radius:10px;margin-bottom:15px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border:1px solid #ddd;text-align:left}
+th{background:#007bff;color:white}
+.total{background:#d4edda;padding:15px;border-radius:10px;font-size:20px;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>Sales History</h1>
+<p><a href="/">Back to Inventory</a> | <a href="/sell">Sell Drug</a></p>
+<div class="total">Total Sales: GHS {{ total }}</div>
+<br>
+<div class="card">
+<table>
+<tr><th>ID</th><th>Drug</th><th>Qty</th><th>Total (GHS)</th><th>Patient</th><th>Date</th></tr>
+{% for s in sales %}
+<tr>
+<td>{{ s['id'] }}</td>
+<td>{{ s['drug_name'] }}</td>
+<td>{{ s['quantity'] }}</td>
+<td>{{ s['total'] }}</td>
+<td>{{ s['patient_name'] }}</td>
+<td>{{ s['date'] }}</td>
+</tr>
+{% endfor %}
+</table>
+{% if not sales %}
+<p>No sales yet.</p>
+{% endif %}
+</div>
+</body>
+</html>

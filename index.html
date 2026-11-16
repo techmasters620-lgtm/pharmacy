@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hospitality Pharmacy</title>
+{% for d in drugs %}
+  {% if d['quantity'] < 10 %}
+  <div style="background:#f8d7da;padding:10px;border-radius:8px;margin-bottom:10px;color:red;font-weight:bold;">
+    LOW STOCK: {{ d['name'] }} {{ d['dosage'] }} - Only {{ d['quantity'] }} left! Please restock.
+  </div>
+  {% endif %}
+{% endfor %}
+
+<style>
+body{font-family:Arial;padding:20px;background:#f4f6f8}
+.card{background:white;padding:15px;border-radius:10px;margin-bottom:15px;box-shadow:0 1px 5px #ddd}
+.alert-low{background:#fff3cd;border:1px solid #ffc107;padding:15px;border-radius:10px;margin-bottom:15px}
+.alert-exp{background:#f8d7da;border:1px solid #dc3545;padding:15px;border-radius:10px;margin-bottom:15px}
+table{width:100%;background:white;border-collapse:collapse}
+th,td{padding:10px;border:1px solid #ddd;text-align:left}
+.low{color:red;font-weight:bold}
+input,button{padding:8px;margin:3px}
+button{cursor:pointer}
+</style>
+</head>
+<body>
+
+<h1>Hospitality Pharmacy System</h1>
+<p>Support: +233 24 769 0704 | Accra, Ghana</p>
+
+<!-- SEARCH -->
+<div class="card">
+<form method="GET" action="/">
+    <input type="text" name="search" placeholder="Search drug or batch..." value="{{ search }}" style="width:300px;">
+    <button type="submit">Search</button>
+    {% if search %}<a href="/"><button type="button">Clear</button></a>{% endif %}
+</form>
+</div>
+
+<!-- LOW STOCK ALERT -->
+{% if low_stock %}
+<div class="alert-low">
+    <h3>LOW STOCK ALERT - {{ low_count }} drugs running low!</h3>
+    {% for d in low_stock %}
+    <p><b>{{ d['name'] }} {{ d['dosage'] }}</b> - Only <span class="low">{{ d['quantity'] }} left</span> | Batch: {{ d['batch_number'] }} | <a href="/edit/{{ d['id'] }}">Restock Now</a></p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- EXPIRY ALERT -->
+{% if expiring %}
+<div class="alert-exp">
+    <h3>EXPIRING SOON (Next 30 Days)</h3>
+    {% for d in expiring %}
+    <p><b>{{ d['name'] }}</b> expires on {{ d['expiry_date'] }} - Qty: {{ d['quantity'] }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- ADD INVENTORY FORM -->
+<div class="card">
+<h3>Add New Drug to Inventory</h3>
+<form method="POST" action="/add">
+    <input name="name" placeholder="Drug Name e.g. Paracetamol" required>
+    <input name="dosage" placeholder="Dosage e.g. 500mg" required>
+    <input name="quantity" type="number" placeholder="Quantity" required>
+    <input name="price" type="number" step="0.01" placeholder="Price GHS" required>
+    <input name="batch_number" placeholder="Batch No." required>
+    <input name="expiry_date" type="date" required>
+    <button type="submit" style="background:green;color:white;">Add to Inventory</button>
+</form>
+</div>
+
+<!-- INVENTORY LIST -->
+<div class="card">
+<h3>Inventory List ({{ total_drugs }} drugs) {% if search %} - Results for "{{ search }}"{% endif %}</h3>
+<table>
+<tr><th>Name</th><th>Dosage</th><th>Qty</th><th>Price</th><th>Batch</th><th>Expiry</th><th>Actions</th></tr>
+{% for d in drugs %}
+<tr>
+    <td><b>{{ d['name'] }}</b></td>
+    <td>{{ d['dosage'] }}</td>
+    <td>{% if d['quantity'] < 10 %}<span class="low">{{ d['quantity'] }} - LOW!</span>{% else %}{{ d['quantity'] }}{% endif %}</td>
+    <td>GHS {{ d['price'] }}</td>
+    <td>{{ d['batch_number'] }}</td>
+    <td>{{ d['expiry_date'] }}</td>
+    <td>
+        <a href="/edit/{{ d['id'] }}"><button>Edit</button></a>
+        <a href="/delete/{{ d['id'] }}" onclick="return confirm('Delete {{ d['name'] }}?')"><button style="background:red;color:white;">Delete</button></a>
+    </td>
+</tr>
+{% else %}
+<tr><td colspan="7" style="text-align:center;">No drugs found. Add one above.</td></tr>
+{% endfor %}
+</table>
+</div>
+
+</body>
+</html>

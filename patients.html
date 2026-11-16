@@ -1,0 +1,7 @@
+<!DOCTYPE html><html><body style="font-family:Arial;padding:20px;">
+<h1>Patients</h1><a href="/">Back</a>
+<h3>Add Patient</h3>
+<form method="POST"><input name="name" placeholder="Full Name" required><input name="phone" placeholder="Phone"><input name="age" placeholder="Age"><input name="notes" placeholder="Notes / Allergies"><button>Add</button></form>
+<table border="1" cellpadding="10" style="margin-top:20px;"><tr><th>Name</th><th>Phone</th><th>Age</th><th>Action</th></tr>
+{% for p in patients %}<tr><td>{{p['name']}}</td><td>{{p['phone']}}</td><td>{{p['age']}}</td><td><a href="/patient/{{p['id']}}">View History</a></td></tr>{% endfor %}</table>
+</body></html>
